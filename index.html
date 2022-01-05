@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Librairie
+    </title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<h1>MY LIB</h1>
+			<div class="book-form">
+    
+                <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
+                    <div>
+                        <label>TITRE</label>
+                        <input type="text" maxlength="30" placeholder="Titre du livre" name="titre" id="titre" required>
+                    </div>
+                    <div>
+                        <label>AUTEUR</label>
+                        <input type="text" maxlength="30" placeholder="Auteur" name="auteur" id="auteur" required>
+                    </div>
+                    <div>
+                        <label>PRIX</label>
+                        <input type="number" min="0" placeholder="Prix du livre" name="prix" id="prix" required>
+                    </div>
+                    <div>
+                        <label>DATE DE PUBLICATION</label>
+                        <input type="date" placeholder="Date de publication" name="dateDePublication" id="datePub"required>
+                    </div>
+                    <div>
+                        <label>LANGUE</label>
+                        <input type="text" placeholder="Langue du livre " name="langue" id="langue" list="lesLangues" required>
+                        <datalist id="lesLangues">
+                            <option value="Francais">
+                            <option value="Anglais">
+                            <option value="Arabe">
+                          </datalist>
+                    </div>
+                    <label for="email">Email d'auteur</label>
+                    <input type="email" name="email" id="emailAuteur">
+                    <div>
+                        <input type="radio" id="typeRoman" name="typee" value="Roman" >
+                        <label>ROMAN</label>
+                        <input type="radio" id="typeEssai" name="typee" value="Essai" >
+                        <label>ESSAI</label>
+                        <input type="radio" id="typeBandeDessinee" name="typee" value="Bande-dessinee">
+                        <label>BANDE-DESSINEE</label>
+                    </div>
+                    
+                
+                    <div  class="button">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+              
+		</div>
+		<br/>
+		<div class = "book-table">
+                <table  id="list">
+                    <thead>
+                        <tr>
+                            <th>TITRE</th>
+                            <th>AUTEUR</th>
+                            <th>PRIX</th>
+                            <th>DATE DE PUBLICATION</th>
+                            <th>LANGUE</th>
+                            <th>TYPE</th>
+                            <th >EMAIL</th>
+                            <th >ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+        </div>
+    <script src="script.js"></script>
+</body>
+</html>

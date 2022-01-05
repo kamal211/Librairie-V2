@@ -1,0 +1,89 @@
+body
+{
+    background-image: url(background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+h1
+{
+    color: #fff;
+    font-size: 3em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-left: 47%;
+}
+.book-form {
+    border: #000 solid 5px;
+    padding: 10px;
+    margin-left: 34%;
+    width: 40%;
+}
+
+label
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: #fff;
+}
+#list
+{
+    margin-left: 30%;
+    width: 52%;
+}
+table{
+    border-collapse: collapse;
+}
+
+ td,th {
+    border: 3px solid #ccc;
+    text-align: center;
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #fff;
+}
+
+tbody
+{
+    background-color: none;
+}
+
+
+input[type=text], input[type=number], input[type=date],input[type=email]{
+    width: 100%;
+    padding: 8px 20px;
+    margin: 8px auto;
+    border: 1px solid;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 30%;
+    background-color: black;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+input[type=radio]
+{
+    margin-left: 50px;
+}
+
+.button{
+    text-align: center;
+   
+}
+.button:hover
+{
+    opacity: 50%;
+}
+
+a{
+    cursor: pointer;
+    text-decoration: underline;
+    color: #fff;
+    margin-right: 5px;
+}
+a:hover{
+    color: black;
+}
