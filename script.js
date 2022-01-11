@@ -1,3 +1,21 @@
+
+        let infoBook =  {
+            // titre:"mldo",
+            // auteur :"franki",
+            // prix :30,
+            // date :"12/02/2002",
+            // langue :"Anglais",
+            // type:"ROMAN",
+            // email:"mysite123@gmail.br",
+            
+            titre : document.getElementById("titre").value,
+            auteur : document.getElementById("auteur").value,
+            prix : document.getElementById("prix").value,
+            datePub : document.getElementById("datePub").value,
+            langue : document.getElementById("langue").value,
+            // type : document.querySelector('input[name="typee"]:checked').value,
+            emailAuteur : document.getElementById("emailAuteur").value
+        };
 let arrOuvrage = [
 //     {
 //     titre:"zldo",
@@ -53,14 +71,15 @@ class Ouvrage
 
     }
     
-    static ValidateOuvrage()
+    static ValidateOuvrage(infoBook)
     {
-        let titre = document.getElementById("titre");
-        let nomAuteur = document.getElementById("auteur").value;
-        let prix = document.getElementById("prix").value;
-        let langue = document.getElementById("langue").value;
+        let validateBook = new Ouvrage(infoBook.titre,infoBook.auteur,infoBook.prix,infoBook.datePub,infoBook.langue,infoBook.type)
+        let titre =infoBook.titre;
+        let nomAuteur = document.getElementById("auteur");
+        let prix = document.getElementById("prix");
+        let langue = document.getElementById("langue");
         let type = document.querySelector('input[name="typee"]:checked');
-        let emailAuteur = document.getElementById("emailAuteur").value;
+        let emailAuteur = document.getElementById("emailAuteur");
 
         let regexTitre =  /^[\w @ -_]{2,20}$/;
         let regexNomAuteur =  /^[a-zA-Z ]{1,20}$/;
@@ -68,12 +87,12 @@ class Ouvrage
         let regexLangue = /^(Francais|Anglais|Arabe)*$/;
         let regexType = /^(ROMAN|ESSAI|BANDE-DESSINEE)*$/;
         let regexEmailAuteur = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        let auteurValid = regexNomAuteur.test(nomAuteur);
-        let titreValid = regexTitre.test(titre);
-        let prixValid = regexprix.test(prix);
-        let langueValid = regexLangue.test(langue);
-        let typeValid = regexType.test(type);
-        let emailAuteurValid = regexEmailAuteur.test(emailAuteur);
+        let auteurValid = regexNomAuteur.test(nomAuteur.value);
+        let titreValid = regexTitre.test(titre.value);
+        let prixValid = regexprix.test(prix.value);
+        let langueValid = regexLangue.test(langue.value);
+        let typeValid = regexType.test(type.value);
+        let emailAuteurValid = regexEmailAuteur.test(emailAuteur.value);
         if(titreValid == false){
             alert("titre is invalid")
          titre.focus()
@@ -103,7 +122,7 @@ class Ouvrage
         {
         alert("email is invalid")
         }
-     return true
+     return(validateBook.ValidateOuvrage())
     }
     static onEdit(td) {
         selectedRow = td.parentElement.parentElement
@@ -119,15 +138,15 @@ class Ouvrage
                            console.log(selectedRow)
      
     };
-    static updateRecord(infoBook) {
-        selectedRow.cells[0].innerHTML = infoBook.titre;
-        selectedRow.cells[1].innerHTML = infoBook.auteur;
-        selectedRow.cells[2].innerHTML = infoBook.prix;
-        selectedRow.cells[3].innerHTML = infoBook.datePub;
-        selectedRow.cells[4].innerHTML = infoBook.langue;
-        selectedRow.cells[5].innerHTML = infoBook.type;
-        selectedRow.cells[6].innerHTML = infoBook.emailAuteur;
-    };
+    // static updateRecord(infoBook) {
+    //     selectedRow.cells[0].innerHTML = infoBook.titre;
+    //     selectedRow.cells[1].innerHTML = infoBook.auteur;
+    //     selectedRow.cells[2].innerHTML = infoBook.prix;
+    //     selectedRow.cells[3].innerHTML = infoBook.datePub;
+    //     selectedRow.cells[4].innerHTML = infoBook.langue;
+    //     selectedRow.cells[5].innerHTML = infoBook.type;
+    //     selectedRow.cells[6].innerHTML = infoBook.emailAuteur;
+    // };
     static  onDelete(td) {
         if (confirm('Are you sure to delete this record ?')) {
             row = td.parentElement.parentElement;
@@ -167,57 +186,56 @@ class Ouvrage
                            
           
     }
-    static readFormData() {
+//     static readFormData() {
 
   
-        let infoBook =  {
-            // titre:"mldo",
-            // auteur :"franki",
-            // prix :30,
-            // date :"12/02/2002",
-            // langue :"Anglais",
-            // type:"ROMAN",
-            // email:"mysite123@gmail.br",
-            
-            titre : document.getElementById("titre").value,
-            auteur : document.getElementById("auteur").value,
-            prix : document.getElementById("prix").value,
-            datePub : document.getElementById("datePub").value,
-            langue : document.getElementById("langue").value,
-            type : document.querySelector('input[name="typee"]:checked').value,
-            emailAuteur : document.getElementById("emailAuteur").value
-        };
+//        if(Ouvrage.ValidateOuvrage())
+//        {
+        
        
-        let book2= new Ouvrage(infoBook.titre,infoBook.auteur,infoBook.prix,infoBook.datePub,infoBook.langue,infoBook.type)
-        alert(book2.DetailOuvrage());
-        arrOuvrage.push(infoBook);
-    if (Ouvrage.ValidateOuvrage())
-        return infoBook;
+       
     
-    };
-}
+//     arrOuvrage.push(infoBook);
+// }
 
-
-let selectedRow = null;
-function onFormSubmit() {
-    var infoBook = Ouvrage.readFormData();
-    if (selectedRow == null){
-        
-        Ouvrage.newRecord(infoBook);
-        
+    
+//     };
+    static onFormSubmit(){
+        // let infoBook = Ouvrage.readFormData();
+    if (Ouvrage.ValidateOuvrage())
+     Ouvrage.newRecord(infoBook)
+    else {
+    Ouvrage.updateRecord(infoBook)
+    Ouvrage.resetForm();}
     }
-    else
-        Ouvrage.updateRecord(infoBook);
-    Ouvrage.resetForm();
-
 }
-// console.log(onFormSubmit)
+
+let addEvent = document.getElementById("submit").addEventListener("click", function() {
+  Ouvrage.onFormSubmit()
+    let book2= new Ouvrage(infoBook.titre,infoBook.auteur,infoBook.prix,infoBook.datePub,infoBook.langue,infoBook.type)
+    alert(book2.DetailOuvrage());
+});
+let selectedRow = null;
+// function onFormSubmit() {
+//     var infoBook = Ouvrage.readFormData();
+//     if (selectedRow == null){
+//         Ouvrage.ValidateOuvrage(infoBook);
+//         Ouvrage.newRecord(infoBook);
+        
+        
+//     }
+//     else{
+//         Ouvrage.updateRecord(infoBook);
+//     Ouvrage.resetForm();
+// }
+// }
+//  console.log(Ouvrage.updateRecord())
 
 
  
 //Test DetailOuvrage()
-    //let book2= new Ouvrage('alex','under','20','2020/12/01','english','roman')
-    //console.log(book2.DetailOuvrage());
+    // let book2= new Ouvrage('alex','under','20','2020/12/01','english','roman')
+    // console.log(book2.DetailOuvrage());
 
 //Test ValidateForm()
     //  console.log(readFormData())
