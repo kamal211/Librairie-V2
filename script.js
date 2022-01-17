@@ -33,11 +33,11 @@ let arrOuvrage = [
 // }
 ];
 
-// arrOuvrage.sort(function (x, y) {
-//     let a = x.titre.toUpperCase(),
-//         b = y.titre.toUpperCase();
-//     return a == b ? 0 : a > b ? 1 : -1;
-// });
+arrOuvrage.sort(function (x, y) {
+    let a = x.titre.toUpperCase(),
+        b = y.titre.toUpperCase();
+    return a == b ? 0 : a > b ? 1 : -1;
+});
 class Ouvrage
 {
     constructor(titre,nomAuteur,prix,datePublication,langue,type,emailAuteur)
@@ -63,7 +63,6 @@ class Ouvrage
         let regexNomAuteur =  /^[a-zA-Z ]{1,20}$/;
         let regexprix = /^\d{1,6}(\.\d{1,2})*$/;
         let regexLangue = /^(Francais)|(Anglais)|(Arabe)*\g$/;
-        let regexType = /^(ROMAN|ESSAI|BANDE-DESSINEE)*$/;
         let regexEmailAuteur = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         let titreValid = regexTitre.test(this.titre);
@@ -71,7 +70,6 @@ class Ouvrage
         let prixValid = regexprix.test(this.prix);
         let datePublication = this.datePublication;
         let langueValid = regexLangue.test(this.langue);
-        let typeValid = regexType.test(this.type);
         let emailAuteurValid = regexEmailAuteur.test(this.emailAuteur);
         if(titreValid == false){
             alert("titre is invalid")
@@ -98,11 +96,6 @@ class Ouvrage
         alert("langue is invalid")
         return langue.focus()
         }
-        if(typeValid == false)
-        {
-        alert("type is invalid")
-        return type.focus()
-        }
         if(emailAuteurValid == false)
         {
         alert("email is invalid")
@@ -110,16 +103,18 @@ class Ouvrage
         }
      return true
     }
-    get triOuvr()
-    {
-        let a = this.titre.toUpperCase(),
-        b = this.titre.toUpperCase();
-    return a == b ? 0 : a > b ? 1 : -1;
 
-    }
 
 }
 
+function  resetForm() {
+    document.getElementById("titre").value = "";
+    document.getElementById("auteur").value = "";
+    document.getElementById("prix").value = "";
+    document.getElementById("datePub").value = "";
+    document.getElementById("langue").value = "";
+ 
+}
 
 function lireOuvrages()
 {
@@ -135,28 +130,43 @@ function lireOuvrages()
     if (ouvr.isntValid == true)
     {
         arrOuvrage.push(ouvr);
+      
     }
     else 
     return false
 
 
 }
-// function insertOuvr(){
-//     if(lireOuvrages() == true)
-//     {
-//      arrOuvrage.push(lireOuvrages());
-//     }
-// }
-// console.log(insertOuvr())
-document.getElementById("submit").addEventListener("click" ,function submit(){
-    let newOuvr = lireOuvrages()
-    if(selectedRow == null)
-    {
-        newRecord(newOuvr)
+function  newRecord() {
+    let newTbody = document.createElement('tbody');
+    
+    for (let i = 0; i<arrOuvrage.length; i++){
+    let newRow = newTbody.insertRow(i);
+     newRow.insertCell(0).textContent = arrOuvrage[i].titre;
+    newRow.insertCell(1).textContent = arrOuvrage[i].nomAuteur;
+    newRow.insertCell(2).textContent = arrOuvrage[i].prix;
+    newRow.insertCell(3).textContent = arrOuvrage[i].datePublication;
+    newRow.insertCell(4).textContent= arrOuvrage[i].langue;
+    newRow.insertCell(5).textContent = arrOuvrage[i].type;
+    newRow.insertCell(6).textContent = arrOuvrage[i].emailAuteur;
+    newRow.insertCell(7).innerHTML = `<a onClick="onEdit(this)">Edit</a>
+                       <a onClick="onDelete(this)">Delete</a>`;
+                     
+                    }  
+                    let oldTbody = document.getElementsById('list').document.getElementsByTagName('tbody')[0];
+                    document.getElementsById('list').replaceChild(oldTbody,newTbody);
+}
 
+document.getElementById("submit").addEventListener("click" ,function submit(){
+   
+    if( lireOuvrages())
+
+    {
+       
+        newRecord()
     }
     else 
-     resetForm()
+     return false
     
   
 })
@@ -190,31 +200,7 @@ document.getElementById("submit").addEventListener("click" ,function submit(){
 //     }
 
 // }
-function  resetForm() {
-    document.getElementById("titre").value = "";
-    document.getElementById("auteur").value = "";
-    document.getElementById("prix").value = "";
-    document.getElementById("datePub").value = "";
-    document.getElementById("langue").value = "";
- 
-}
-function  newRecord() {
-    let table = document.getElementsByTagName('tbody')[0];
-    let newRow = table.insertRow();
-    for (let obj of arrOuvrage){
-    
-    newRow.insertCell(0).textContent = obj.titre;
-    newRow.insertCell(1).textContent = obj.nomAuteur;
-    newRow.insertCell(2).textContent = obj.prix;
-    newRow.insertCell(3).textContent = obj.datePublication;
-    newRow.insertCell(4).textContent= obj.langue;
-    newRow.insertCell(5).textContent = obj.type;
-    newRow.insertCell(6).textContent = obj.emailAuteur;
-    newRow.insertCell(7).innerHTML = `<a onClick="onEdit(this)">Edit</a>
-                       <a onClick="onDelete(this)">Delete</a>`;
-                       return selectedRow = table
-                    }  
-}
+
 
   
 // function onFormSubmit(){
