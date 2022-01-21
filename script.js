@@ -1,43 +1,7 @@
 
-let selectedRow = null
       
-let arrOuvrage = [
-//     {
-//     titre:"zldo",
-//     auteur :"franki",
-//     prix :30,
-//     date :"12/02/2002",
-//     langue :"Anglais",
-//     type:"ROMAN",
-//     email:"mysite123@gmail.br"
-// },
-
-
-// {
-//     titre:"eldo",
-//     auteur :"franki",
-//     prix :30,
-//     date :"12/02/2002",
-//     langue :"Anglais",
-//     type:"ROMAN",
-//     email:"mysite123@gmail.br"
-// },
-// {
-//     titre:"Hldo",
-//     auteur :"franki",
-//     prix :30,
-//     date :"12/02/2002",
-//     langue :"Anglais",
-//     type:"ROMAN",
-//     email:"mysite123@gmail.br"
-// }
-];
-
-arrOuvrage.sort(function (x, y) {
-    let a = x.titre.toUpperCase(),
-        b = y.titre.toUpperCase();
-    return a == b ? 0 : a > b ? 1 : -1;
-});
+let arrOuvrage = [];
+let selectedRow = null;
 class Ouvrage
 {
     constructor(titre,nomAuteur,prix,datePublication,langue,type,emailAuteur)
@@ -55,10 +19,48 @@ class Ouvrage
         return `L'ouvrage ${this.titre} est un ${this.type} en langue ${this.langue}, écrit par ${this.nomAuteur} et publié le ${this.datePublication}. Le prix de ${this.titre} est de ${this.prix} Dhs.`;
 
     }
+    // get allValid() {
+    //     let ValidationChamps = [];
     
+    //     let titreRegex = /^[\w-_@?!\s]+$/;
+    //     if (titreRegex.test(this.titre) && this.titre.length <= 30)
+    //       ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
     
-    get isntValid()
+    //     let auteurRegex = /^([A-Za-z-\s]+)$/;
+    //     if (auteurRegex.test(this.auteur) && this.auteur.length <= 30)
+    //       ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     let prixRegex = /^\d+(\.\d+)*$/;
+    //     if (prixRegex.test(this.prix)) ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     if (
+    //       new Date(this.datePublication) !== "Invalid Date" &&  !isNaN(new Date(this.datePublication))
+    //     )
+    //       ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     let langueRegex = /^(Anglais|Français|Arabe)$/;
+    //     if (langueRegex.test(this.langue)) ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     let typeRegex = /^(Essai|Roman|Bande Dessinée)$/;
+    //     if (typeRegex.test(this.type) && this.type !== undefined)
+    //       ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    //     if (emailRegex.test(this.emailAuteur)) ValidationChamps.push(true);
+    //     else ValidationChamps.push(false);
+    
+    //     return ValidationChamps;
+    //   }
+    
+    get allValid()
     {
+       let validChamp = []
         let regexTitre =  /^[\w @ -_]{2,20}$/;
         let regexNomAuteur =  /^[a-zA-Z ]{1,20}$/;
         let regexprix = /^\d{1,6}(\.\d{1,2})*$/;
@@ -68,54 +70,45 @@ class Ouvrage
         let titreValid = regexTitre.test(this.titre);
         let auteurValid = regexNomAuteur.test(this.nomAuteur);
         let prixValid = regexprix.test(this.prix);
-        let datePublication = this.datePublication;
+        let datePubValid = new Date(this.datePublication) !== "Invalid Date";
         let langueValid = regexLangue.test(this.langue);
         let emailAuteurValid = regexEmailAuteur.test(this.emailAuteur);
-        if(titreValid == false){
-            alert("titre is invalid")
-         return titre.focus()
-        
-        }
-        if(auteurValid == false)
-        {
-        alert("auteur is invalid")
-        return auteur.focus()
-        }
-        if(prixValid == false)
-        {
-        alert("prix is invalid")
-        return prix.focus()
-        }
-        if(datePublication === "")
-        {
-        alert("date is invalid")
-        return datePub.focus()
-        }
-        if(langueValid == false)
-        {
-        alert("langue is invalid")
-        return langue.focus()
-        }
-        if(emailAuteurValid == false)
-        {
-        alert("email is invalid")
-        return emailAuteur.focus()
-        }
-     return true
+        if(titreValid == true)
+          validChamp.push(true)
+            else validChamp.push(false)
+        if(auteurValid)
+          validChamp.push(true)
+            else validChamp.push(false)
+        if(prixValid == true)
+          validChamp.push(true)
+            else validChamp.push(false)
+        if(datePubValid == true)
+          validChamp.push(true)
+            else validChamp.push(false)
+        if(langueValid == true)
+          validChamp.push(true)
+            else validChamp.push(false)
+        if(emailAuteurValid == true)
+          validChamp.push(true)
+            else validChamp.push(false)
+
+     return validChamp
     }
-
-
+    get isValid()
+    {
+        for(let i=0; i < 6 ; i++)
+            if(this.allValid[i]===false) return false;
+            
+            return true;
+        
+    }
+    static TriArr(Ouv1,Ouv2)
+    {
+        let a = Ouv1.titre.toUpperCase(),
+           b = Ouv2.titre.toUpperCase();
+            return a == b ? 0 : a > b ? 1 : -1;
+    }
 }
-
-function  resetForm() {
-    document.getElementById("titre").value = "";
-    document.getElementById("auteur").value = "";
-    document.getElementById("prix").value = "";
-    document.getElementById("datePub").value = "";
-    document.getElementById("langue").value = "";
- 
-}
-
 function lireOuvrages()
 {
     let titre = document.getElementById("titre").value;
@@ -126,20 +119,39 @@ function lireOuvrages()
     let type = document.querySelector('input[name="typee"]:checked').value;
     let emailAuteur = document.getElementById("emailAuteur").value;
     let ouvr = new Ouvrage(titre,nomAuteur,prix,datePublication,langue,type,emailAuteur)
-    
-    if (ouvr.isntValid == true)
-    {
-        arrOuvrage.push(ouvr);
-      
-    }
-    else 
-    return false
 
-
+    return ouvr
 }
-function  newRecord() {
+function errMsg(info)
+{
+    let msg ='';
+    if(!info.allValid[0])msg+='Le titre';
+    if(!info.allValid[1])msg+="Le nom d'auteur";
+    if(!info.allValid[2])msg+='Le prix';
+    if(!info.allValid[3])msg+='La date de publication';
+    if(!info.allValid[4])msg+='La langue';
+    if(!info.allValid[5])msg+="l'email d'auteur";
+    msg+="est invalide"
+    return msg
+}
+function pushArr(info)
+{ 
+    arrOuvrage.push(info);
+    arrOuvrage.sort(Ouvrage.TriArr);
+    newRecord()
+    resetForm()
+}
+function  resetForm() {
+    document.getElementById("titre").value = "";
+    document.getElementById("auteur").value = "";
+    document.getElementById("prix").value = "";
+    document.getElementById("datePub").value = "";
+    document.getElementById("langue").value = "";
+    document.getElementById("emailAuteur").value = "";
+   
+}
+function newRecord() {
     let newTbody = document.createElement('tbody');
-    
     for (let i = 0; i<arrOuvrage.length; i++){
     let newRow = newTbody.insertRow(i);
      newRow.insertCell(0).textContent = arrOuvrage[i].titre;
@@ -153,45 +165,26 @@ function  newRecord() {
                        <a onClick="onDelete(this)">Delete</a>`;
                      
                     }  
-                    let oldTbody = document.getElementsById('list').document.getElementsByTagName('tbody')[0];
-                    document.getElementsById('list').replaceChild(oldTbody,newTbody);
-}
+                    let oldTbody = document.getElementById('list').getElementsByTagName('tbody')[0];
+                    oldTbody.parentNode.replaceChild(newTbody,oldTbody)
+            
+                    
+            
+                 }
 
 document.getElementById("submit").addEventListener("click" ,function submit(){
-   
-    if( lireOuvrages())
-
-    {
-       
-        newRecord()
-    }
+   monOuv = lireOuvrages()
+   if(selectedRow === null){
+    if(monOuv.isValid)
+        pushArr(monOuv)
     else 
-     return false
-    
-  
+    document.getElementById('msgErr').innerHTML = errMsg(monOuv)
+    }
+    else alert('scamp')
+
 })
-
-//  console.log(lireOuvrages())
-//Test DetailOuvrage()
-    // let book2= new Ouvrage('alex','under','20','2020/12/01','english','roman')
-    // console.log(book2.DetailOuvrage());
-
-//Test ValidateForm()
-    //  console.log(readFormData())
-
-//Test array Sort()
     console.log(arrOuvrage)
-   
 
-    // function updateRecord(infoBook) {
-//     selectedRow.cells[0].innerHTML = infoBook.titre;
-//     selectedRow.cells[1].innerHTML = infoBook.auteur;
-//     selectedRow.cells[2].innerHTML = infoBook.prix;
-//     selectedRow.cells[3].innerHTML = infoBook.datePub;
-//     selectedRow.cells[4].innerHTML = infoBook.langue;
-//     selectedRow.cells[5].innerHTML = infoBook.type;
-//     selectedRow.cells[6].innerHTML = infoBook.emailAuteur;
-// };
 // function  onDelete(td) {
 //     if (confirm('Are you sure to delete this record ?')) {
 //         row = td.parentElement.parentElement;
@@ -201,28 +194,12 @@ document.getElementById("submit").addEventListener("click" ,function submit(){
 
 // }
 
-
-  
-// function onFormSubmit(){
-//         // let infoBook = Ouvrage.readFormData();
-//     if (Ouvrage.ValidateOuvrage())
-//      Ouvrage.newRecord(infoBook)
-//     else {
-//     Ouvrage.updateRecord(infoBook)
-//     Ouvrage.resetForm();}
-//     }
-
 // function onEdit(td) {
-//     selectedRow = td.parentElement.parentElement
-//     ;
+//     selectedRow = td.parentElement.parentElement;
 //     document.getElementById("titre").value = selectedRow.cells[0].innerHTML;
 //     document.getElementById("auteur").value = selectedRow.cells[1].innerHTML;
 //     document.getElementById("prix").value = selectedRow.cells[2].innerHTML;
 //     document.getElementById("datePub").value = selectedRow.cells[3].innerHTML;
 //     document.getElementById("langue").value = selectedRow.cells[4].innerHTML;
-  
-    
-    
-//                        console.log(selectedRow)
- 
-// };
+//     document.getElementById("emailAuteur").value = selectedRow.cells[5].innerHTML;
+// }
