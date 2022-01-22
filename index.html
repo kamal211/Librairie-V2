@@ -12,9 +12,9 @@
 <body>
 
 	<h1>MY LIB</h1>
+    
 			<div class="book-form">
                 <span id="msgErr"></span>
-    
                 <form onsubmit="event.preventDefault();" autocomplete="off">
                     <div>
                         <label>TITRE</label>
@@ -26,7 +26,7 @@
                     </div>
                     <div>
                         <label>PRIX</label>
-                        <input type="number"  placeholder="Prix du livre" name="prix" id="prix">
+                        <input type="number" min="1" placeholder="Prix du livre" name="prix" id="prix">
                     </div>
                     <div>
                         <label>DATE DE PUBLICATION</label>
@@ -42,7 +42,7 @@
                           </datalist>
                     </div>
                     <label for="email">Email d'auteur</label>
-                    <input type="email" name="email" id="emailAuteur">
+                    <input type="email" placeholder="Email d'auteur" name="email" id="emailAuteur">
                     <div>
                         <input type="radio" id="typeRoman" name="typee" value="ROMAN" checked >
                         <label>ROMAN</label>
@@ -78,6 +78,7 @@
 
                     </tbody>
                 </table>
+                <input type="button" value="Print Table" onclick="print()" id="print" />
         </div>
     <script src="script.js"></script>
 </body>

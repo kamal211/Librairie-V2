@@ -17,7 +17,12 @@ h1
     margin-left: 34%;
     width: 40%;
 }
-
+#msgErr
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: red;
+}
 label
 {
     font-family: Arial, Helvetica, sans-serif;
@@ -63,6 +68,17 @@ input[type=submit] {
     padding: 10px 18px;
     border-radius: 5px;
     margin-top: 15px;
+}
+#print
+{
+    width: 10%;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-left: 50%;
+
 }
 input[type=radio]
 {

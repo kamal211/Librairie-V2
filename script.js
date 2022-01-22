@@ -62,27 +62,26 @@ class Ouvrage
     {
        let validChamp = []
         let regexTitre =  /^[\w @ -_]{2,20}$/;
-        let regexNomAuteur =  /^[a-zA-Z ]{1,20}$/;
+        let regexNomAuteur =  /^[a-zA-Z ]{2,20}$/;
         let regexprix = /^\d{1,6}(\.\d{1,2})*$/;
-        let regexLangue = /^(Francais)|(Anglais)|(Arabe)*\g$/;
+        let regexLangue = /^Francais|Anglais|Arabe$/;
         let regexEmailAuteur = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         let titreValid = regexTitre.test(this.titre);
         let auteurValid = regexNomAuteur.test(this.nomAuteur);
         let prixValid = regexprix.test(this.prix);
-        let datePubValid = new Date(this.datePublication) !== "Invalid Date";
         let langueValid = regexLangue.test(this.langue);
         let emailAuteurValid = regexEmailAuteur.test(this.emailAuteur);
         if(titreValid == true)
           validChamp.push(true)
             else validChamp.push(false)
-        if(auteurValid)
+        if(auteurValid == true)
           validChamp.push(true)
             else validChamp.push(false)
         if(prixValid == true)
           validChamp.push(true)
             else validChamp.push(false)
-        if(datePubValid == true)
+        if(isNaN(this.datePublication))
           validChamp.push(true)
             else validChamp.push(false)
         if(langueValid == true)
@@ -125,13 +124,13 @@ function lireOuvrages()
 function errMsg(info)
 {
     let msg ='';
-    if(!info.allValid[0])msg+='Le titre';
-    if(!info.allValid[1])msg+="Le nom d'auteur";
-    if(!info.allValid[2])msg+='Le prix';
-    if(!info.allValid[3])msg+='La date de publication';
-    if(!info.allValid[4])msg+='La langue';
-    if(!info.allValid[5])msg+="l'email d'auteur";
-    msg+="est invalide"
+    if(!info.allValid[0])msg+='Le titre , &nbsp';
+    if(!info.allValid[1])msg+="Le nom d'auteur , &nbsp";
+    if(!info.allValid[2])msg+='Le prix , &nbsp';
+    if(!info.allValid[3])msg+='La date de publication , &nbsp';
+    if(!info.allValid[4])msg+='La langue , &nbsp';
+    if(!info.allValid[5])msg+="l'email d'auteur , &nbsp";
+    msg+="est invalide*"
     return msg
 }
 function pushArr(info)
@@ -148,6 +147,8 @@ function  resetForm() {
     document.getElementById("datePub").value = "";
     document.getElementById("langue").value = "";
     document.getElementById("emailAuteur").value = "";
+    document.getElementById('msgErr').innerHTML = '';
+
    
 }
 function newRecord() {
@@ -167,39 +168,66 @@ function newRecord() {
                     }  
                     let oldTbody = document.getElementById('list').getElementsByTagName('tbody')[0];
                     oldTbody.parentNode.replaceChild(newTbody,oldTbody)
-            
+                let arrToJson = JSON.stringify(arrOuvrage);
+                localStorage.setItem("arrOuvrage",arrToJson)
                     
             
                  }
+                 function  onDelete(td) {
+                    if (confirm('Are you sure to delete this record ?')) {
+                        row = td.parentElement.parentElement;
+                        document.getElementById("list").deleteRow(row.rowIndex);
+                        resetForm();
+                    }
+                
+                }
+                function updateRecord(info) {
+                    if(info.isValid){
+                    selectedRow.cells[0].innerHTML = info.titre;
+                    selectedRow.cells[1].innerHTML = info.nomAuteur;
+                    selectedRow.cells[2].innerHTML = info.prix;
+                    selectedRow.cells[3].innerHTML = info.datePublication;
+                    selectedRow.cells[4].innerHTML = info.langue;
+                    selectedRow.cells[5].innerHTML = info.type;
+                    selectedRow.cells[6].innerHTML = info.emailAuteur;
+                    resetForm()
+                   }
+                   else  document.getElementById('msgErr').innerHTML = errMsg(info)
+                   
+                }
+                
+                function onEdit(td) {
+                    selectedRow = td.parentElement.parentElement;
+                    document.getElementById("titre").value = selectedRow.cells[0].innerHTML;
+                    document.getElementById("auteur").value = selectedRow.cells[1].innerHTML;
+                    document.getElementById("prix").value = selectedRow.cells[2].innerHTML;
+                    document.getElementById("datePub").value = selectedRow.cells[3].innerHTML;
+                    document.getElementById("langue").value = selectedRow.cells[4].innerHTML;
+                    document.getElementById("emailAuteur").value = selectedRow.cells[6].innerHTML;
+                
+                }
+                
+    function print() {
+        var tab = document.getElementById('list');
+        var win = window.open('', '', 'height=700,width=700');
+        win.document.write(tab.outerHTML);
+        win.document.close();
+        win.print();
+    }
 
 document.getElementById("submit").addEventListener("click" ,function submit(){
    monOuv = lireOuvrages()
    if(selectedRow === null){
-    if(monOuv.isValid)
+    if(monOuv.isValid){
+    alert(monOuv.DetailOuvrage())
         pushArr(monOuv)
+        
+        }
     else 
     document.getElementById('msgErr').innerHTML = errMsg(monOuv)
     }
-    else alert('scamp')
+    else updateRecord(monOuv)
+    
 
 })
     console.log(arrOuvrage)
-
-// function  onDelete(td) {
-//     if (confirm('Are you sure to delete this record ?')) {
-//         row = td.parentElement.parentElement;
-//         document.getElementById("list").deleteRow(row.rowIndex);
-//         resetForm();
-//     }
-
-// }
-
-// function onEdit(td) {
-//     selectedRow = td.parentElement.parentElement;
-//     document.getElementById("titre").value = selectedRow.cells[0].innerHTML;
-//     document.getElementById("auteur").value = selectedRow.cells[1].innerHTML;
-//     document.getElementById("prix").value = selectedRow.cells[2].innerHTML;
-//     document.getElementById("datePub").value = selectedRow.cells[3].innerHTML;
-//     document.getElementById("langue").value = selectedRow.cells[4].innerHTML;
-//     document.getElementById("emailAuteur").value = selectedRow.cells[5].innerHTML;
-// }
